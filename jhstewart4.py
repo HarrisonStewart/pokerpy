@@ -2,6 +2,7 @@ import random
 import pickle
 import os
 import numpy as np
+from poker.pokerstrat import Strategy
 
 #SARSA model for poker
 
