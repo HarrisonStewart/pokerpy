@@ -13,6 +13,12 @@ with open("winners.log", "r") as f:
 
 win_counts = Counter(winners)
 
-print("\n=== Total Wins Across All Runs ===")
+summary_lines = ["\n=== Total Wins Across All Runs ==="]
 for player, count in win_counts.items():
-    print(f"{player}: {count} wins")
+    line = f"{player}: {count} wins"
+    print(line)
+    summary_lines.append(line)
+
+# Append summary to the winners.log file
+with open("winners.log", "a") as f:
+    f.write("\n" + "\n".join(summary_lines) + "\n")

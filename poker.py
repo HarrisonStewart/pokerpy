@@ -809,10 +809,12 @@ BLINDS=[10,20]
 
 table=Table()
 
-player1=Hand('SklanskySys2', table, 'SklanskySys2')
-player2=Hand('qBot', table, 'qBot')
-player2=Hand('sarsaBot', table, 'sarsaBot')
-player4=Hand('JTAdams_Bot', table, 'JTAdams')
+player1=Hand('sarsaBot', table, 'sarsaBot')
+player2=Hand('RandomBot', table, 'randomBot')
+#player3=Hand('SklanskySys2', table, 'SklanskySys2')
+#player4=Hand('ruleBot', table, 'ruleBot')
+#player5=Hand('JTAdams_Bot', table, 'JTAdams')
+
 
 deck=Deck()
 

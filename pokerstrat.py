@@ -3,7 +3,6 @@
 import random, pokerhands
 
 from sarsaBot import sarsaBot
-from qBot import qBot
 
 #for jt's bot
 from collections import Counter
@@ -150,8 +149,6 @@ class SklanskySys2(Strategy):
                         player.fold(pot)
                         
                         
-                
-
 ##Key Number = 400 or more: Move in with AA and fold everything else.
 ##Key Number = 200 to 400: Move in with AA and KK only.
 ##Key Number = 150 to 200: Move in with AA, KK, QQ and AK
@@ -164,34 +161,101 @@ class SklanskySys2(Strategy):
 ##Key Number = 20 to 40: Move in with everything above + any 2 suited cards
 ##Key Number = <20: Move in with any 2-cards.
 
+class ruleBot(Strategy):
+    def __init__(self, player):
+        super().__init__(player)
+        self.name = "ruleBot"
 
-class Random(Strategy):
+    def decide_play(self, player, pot):
+        hand_value, rep, tie_break, raw_data = player.get_value()
+        pot_size = pot.total
+        to_call = player.to_play
+        stack = player.stack
 
-    
-        def decide_play(self, player, pot):
+        # Use hand strength buckets
+        hand_strength = hand_value // 10
 
-                
-             
-                choice=random.randint(0,3)
-               
-                
-                if choice==0:
-                        player.fold(pot)
-                
-                elif choice==1:
-                        if player.stack<=player.to_play:
-                                player.check_call(pot)
-                        else:
-                                player.bet(pot, calc_bet(player))
-                elif choice==2:
-                        if player.stack<=player.to_play:
-                                player.check_call(pot)
-                        else:
-                                player.bet(pot, player.stack)
-                        
-                
-                
-                
+        # --- Safe bet helper ---
+        def safe_bet(amt):
+            amt = int(max(to_call, min(stack, amt)))
+            player.bet(pot, amt)
+
+        # --- Decision logic ---
+        if hand_strength >= 8:
+            # Strong hand: raise or all-in
+            if stack <= to_call or random.random() < 0.3:
+                player.bet(pot, stack)
+            else:
+                safe_bet(pot_size * 0.75)
+
+        elif hand_strength >= 5:
+            if to_call == 0:
+                if random.random() < 0.3:
+                    safe_bet(pot_size * 0.5)
+                else:
+                    player.check_call(pot)
+            else:
+                player.check_call(pot)
+
+        elif hand_strength >= 3:
+            if to_call <= stack * 0.05:
+                player.check_call(pot)
+            else:
+                player.fold(pot)
+
+        else:
+            if to_call == 0:
+                player.check_call(pot)
+            else:
+                player.fold(pot)
+
+
+class randomBot(Strategy):
+    def __init__(self, player):
+        super().__init__(player)
+        self.name = "randomBot"
+
+    def decide_play(self, player, pot):
+        actions = []
+
+        # Determine valid actions based on state
+        if player.to_play == 0:
+            actions = ['check', 'bet_small', 'bet_medium', 'bet_large', 'all_in', 'fold']
+        else:
+            actions = ['call', 'fold', 'bet_small', 'bet_medium', 'bet_large', 'all_in']
+
+        action = random.choice(actions)
+
+        if action == 'fold':
+            player.fold(pot)
+
+        elif action == 'check':
+            if player.to_play == 0:
+                player.check_call(pot)
+            else:
+                player.fold(pot)
+
+        elif action == 'call':
+            player.check_call(pot)
+
+        elif action.startswith('bet'):
+            pot_size = pot.total
+            min_raise = max(10, pot.to_play * 2)
+            stack = player.stack
+
+            if action == 'bet_small':
+                amount = min(stack, max(min_raise, int(pot_size * 0.3)))
+            elif action == 'bet_medium':
+                amount = min(stack, max(min_raise, int(pot_size * 0.6)))
+            elif action == 'bet_large':
+                amount = min(stack, max(min_raise, int(pot_size)))
+            else:
+                amount = min(stack, min_raise)
+
+            player.bet(pot, amount)
+
+        elif action == 'all_in':
+            player.bet(pot, player.stack)             
                 
 class Human(Strategy):
     
@@ -294,6 +358,8 @@ class JTAdams(Strategy):
                         if to_bet < player.to_play or to_bet < 1:
                                 player.check_call(pot)
                         else:
+                              if to_bet <= 0:
+                                  player.check_call(pot) # bug with negative bets
                               player.bet(pot,to_bet)
                 elif win_percentage > 0.4:
                         player.check_call(pot)
