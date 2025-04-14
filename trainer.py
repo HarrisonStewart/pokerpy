@@ -1,7 +1,7 @@
 import subprocess
 from collections import Counter
 
-NUM_RUNS = 1000  # Change to however many times you want
+NUM_RUNS = 100  # Change to however many times you want
 SCRIPT = "poker.py"
 
 for i in range(NUM_RUNS):

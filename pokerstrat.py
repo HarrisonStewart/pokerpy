@@ -1,8 +1,10 @@
 ##poker player strategy and i/o
 
 import random, pokerhands
+from pokerhands import evaluate_hand
 
 from sarsaBot import sarsaBot
+from monteCarloBot import monteCarloBot
 
 #for jt's bot
 from collections import Counter
@@ -534,18 +536,4 @@ class JTAdams(Strategy):
                         return -1
                 else:
                         return 0        
-                        
-                        
-                                
-                        
                 
-                        
-                        
-                        
-                        
-                
-        
-        
-        
-
-
