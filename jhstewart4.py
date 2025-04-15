@@ -17,8 +17,8 @@ class Strategy():
     def decide_play(self, player, pot):
         pass
 
-#an intelligent Monte Carlo based bot with several addition toggleable strategies
-class monteCarloBot(Strategy):
+#an intelligent Monte Carlo based bot
+class jhstewart4(Strategy):
     def __init__(self, player):
         super().__init__(player)
 

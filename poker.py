@@ -809,9 +809,9 @@ BLINDS=[10,20]
 
 table=Table()
 
-player1=Hand('sarsaBot', table, 'sarsaBot')
+#player1=Hand('sarsaBot', table, 'sarsaBot')
 player2=Hand('RandomBot', table, 'randomBot')
-player3=Hand('SklanskySys2', table, 'SklanskySys2')
+#player3=Hand('SklanskySys2', table, 'SklanskySys2')
 player4=Hand('monteCarloBot', table, 'monteCarloBot')
 #player5=Hand('JTAdams_Bot', table, 'JTAdams')
 #player5=Hand('ruleBot', table, 'ruleBot')

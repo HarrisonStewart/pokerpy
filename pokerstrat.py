@@ -361,7 +361,7 @@ class JTAdams(Strategy):
                                 player.check_call(pot)
                         else:
                               if to_bet <= 0:
-                                  player.check_call(pot) # bug with negative bets
+                                  player.check_call(pot) # bug with negative bets (still exists lol)
                               player.bet(pot,to_bet)
                 elif win_percentage > 0.4:
                         player.check_call(pot)
